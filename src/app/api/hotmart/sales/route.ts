@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   async function getData() {
     const clientId = process.env.CLIENT_ID;

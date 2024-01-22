@@ -1,11 +1,10 @@
-import { stringify } from "querystring";
+export const dynamic = "force-dynamic";
 
-export async function GET() {
+import { NextRequest } from "next/server";
+
+export async function GET(request: NextRequest) {
   const gsResponse = await fetch(
-    "https://script.google.com/macros/s/AKfycbwIAj1HWYmqEeF7I_A3WfJGoshnPzSbQLDYir00RhgoWs1QsRj5nLAsEUIAGYuD7DfopQ/exec",
-    {
-      next: { revalidate: 300 },
-    }
+    "https://script.google.com/macros/s/AKfycbwIAj1HWYmqEeF7I_A3WfJGoshnPzSbQLDYir00RhgoWs1QsRj5nLAsEUIAGYuD7DfopQ/exec"
   );
   let leads = await gsResponse.json();
 
