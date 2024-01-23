@@ -47,7 +47,7 @@ export async function GET() {
       async function makeApiRequest() {
         // Reuse the access_token in subsequent API requests
         const queryParams = {
-          start_date: new Date("2022-02-18T08:30:00.000Z").getTime(),
+          start_date: new Date("2024-01-15T08:30:00.000Z").getTime(),
           end_date: new Date().getTime(),
           max_results: 500,
           transaction_status: "APPROVED",
@@ -65,7 +65,7 @@ export async function GET() {
         let payments;
         try {
           payments = await fetch(
-            `https://developers.hotmart.com/payments/api/v1/sales/history?max_results=${queryParams.max_results}&transaction_status=APPROVED,COMPLETE&start_date=${queryParams.start_date}&end_date=${queryParams.end_date}`,
+            `https://developers.hotmart.com/payments/api/v1/sales/summary?max_results=${queryParams.max_results}&transaction_status=APPROVED,COMPLETE&start_date=${queryParams.start_date}&end_date=${queryParams.end_date}`,
             apiConfig
           );
         } catch (error) {
@@ -80,9 +80,5 @@ export async function GET() {
     return response;
   }
   const data = await getData();
-  return Response.json(
-    data.items.sort(
-      (a: any, b: any) => b.purchase.order_date - a.purchase.order_date
-    )
-  );
+  return Response.json(data);
 }
