@@ -2,7 +2,23 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   async function getData() {
-    async function getAccessToken() {
+    async function getAccessToken(
+      clientId: string | undefined,
+      clientSecret: string | undefined,
+      basicAuth: string | undefined
+    ) {
+      const data = {
+        client_id: clientId,
+        client_secret: clientSecret,
+        grant_type: "client_credentials",
+      };
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Basic ${basicAuth}`,
+        },
+      };
       try {
         const response = await fetch(
           "https://api-sec-vlc.hotmart.com/security/oauth/token?grant_type=client_credentials",
@@ -21,33 +37,25 @@ export async function GET() {
         console.error(error);
       }
     }
-    const clientId = process.env.CLIENT_ID;
-    const clientSecret = process.env.CLIENT_SECRET;
-    const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString(
-      "base64"
-    );
-    const data = {
-      client_id: clientId,
-      client_secret: clientSecret,
-      grant_type: "client_credentials",
-    };
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${basicAuth}`,
-      },
-    };
+    const clientIdDaniel = process.env.CLIENT_ID2;
+    const clientSecretDaniel = process.env.CLIENT_SECRET2;
+    const clientIdCarol = process.env.CLIENT_ID;
+    const clientSecretCarol = process.env.CLIENT_SECRET;
+    const basicAuthDaniel = Buffer.from(
+      `${clientIdDaniel}:${clientSecretDaniel}`
+    ).toString("base64");
+    const basicAuthCarol = Buffer.from(
+      `${clientIdCarol}:${clientSecretCarol}`
+    ).toString("base64");
 
     // Call getAccessToken() once at the beginning of the script and store the resulting access token in a constant
 
-    async function init() {
-      let { access_token } = await getAccessToken();
+    async function init(access_token: string) {
       console.log("Access token:", access_token);
       async function makeApiRequest() {
         // Reuse the access_token in subsequent API requests
         const queryParams = {
-          start_date: new Date("2024-01-15T08:30:00.000Z").getTime(),
+          start_date: new Date().getTime() - 604800000 * 2,
           end_date: new Date().getTime(),
           max_results: 500,
           transaction_status: "APPROVED",
@@ -76,8 +84,27 @@ export async function GET() {
       const apiResponse = makeApiRequest();
       return apiResponse;
     }
-    const response = await init();
-    return response;
+    let authCarol = await getAccessToken(
+      clientIdCarol,
+      clientSecretCarol,
+      basicAuthCarol
+    );
+    let access_tokenCarol = authCarol.access_token;
+    const responseCarol = await init(access_tokenCarol);
+    let authDaniel = await getAccessToken(
+      clientIdDaniel,
+      clientSecretDaniel,
+      basicAuthDaniel
+    );
+    let access_tokenDaniel = authDaniel.access_token;
+    const responseDaniel = await init(access_tokenDaniel);
+    return {
+      total:
+        responseCarol.items[0].total_value.value +
+        responseDaniel.items[0].total_value.value,
+      responseCarol,
+      responseDaniel,
+    };
   }
   const data = await getData();
   return Response.json(data);
