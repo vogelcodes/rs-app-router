@@ -1,9 +1,11 @@
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const hotmartSum = await fetch(
     "https://organic-space-goldfish-vwjrw4wpx62x69-3000.preview.app.github.dev/api/hotmart/resumo"
   );
   const metaAdsSum = await fetch(
-    "https://organic-space-goldfish-vwjrw4wpx62x69-3000.preview.app.github.dev/api/meta-ads?range=last_14d"
+    "https://organic-space-goldfish-vwjrw4wpx62x69-3000.preview.app.github.dev/api/meta-ads?range=last_month"
   );
   const dataHotmart = await hotmartSum.json();
   const dataMeta = await metaAdsSum.json();

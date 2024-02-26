@@ -1,7 +1,34 @@
+import { NextRequest } from "next/server";
+
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+const datePresets = [
+  "today",
+  "yesterday",
+  "this_month",
+  "last_month",
+  "this_quarter",
+  "maximum",
+  "data_maximum",
+  "last_3d",
+  "last_7d",
+  "last_14d",
+  "last_28d",
+  "last_30d",
+  "last_90d",
+  "last_week_mon_sun",
+  "last_week_sun_sat",
+  "last_quarter",
+  "last_year",
+  "this_week_mon_today",
+  "this_week_sun_today",
+  "this_year",
+];
+
+export async function GET(request: NextRequest) {
   async function getData() {
+    const range = request.nextUrl.searchParams.get("range") ?? "14";
+
     async function getAccessToken(
       clientId: string | undefined,
       clientSecret: string | undefined,
@@ -48,18 +75,23 @@ export async function GET() {
       `${clientIdCarol}:${clientSecretCarol}`
     ).toString("base64");
 
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const today = new Date();
+    const start_date = today.getTime() - msPerDay * Number(range);
+
     // Call getAccessToken() once at the beginning of the script and store the resulting access token in a constant
 
     async function init(access_token: string) {
       console.log("Access token:", access_token);
       async function makeApiRequest() {
         // Reuse the access_token in subsequent API requests
-        const queryParams = {
-          start_date: new Date().getTime() - 604800000 * 2,
+        var queryParams = {
+          start_date,
           end_date: new Date().getTime(),
           max_results: 500,
           transaction_status: "APPROVED",
         };
+        console.log(queryParams);
 
         const apiConfig = {
           headers: {
@@ -67,7 +99,7 @@ export async function GET() {
             Authorization: `Bearer ${access_token}`,
           },
           next: {
-            revalidate: 600,
+            revalidate: 5,
           },
         };
         let payments;
