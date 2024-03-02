@@ -17,5 +17,5 @@ export async function GET(request: NextRequest) {
     return new Date(b[4]).getTime() - new Date(a[4]).getTime();
   });
   // leads = [new Date().toISOString()].concat(leads.slice(1));
-  return Response.json(leads);
+  return Response.json(leads.slice(1));
 }
