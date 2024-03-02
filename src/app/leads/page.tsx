@@ -22,17 +22,24 @@ const LeadsPage: React.FC = async () => {
         {leads.map((lead, index) => {
           let bgColor = "bg-white";
 
-          if (clientsEmail.includes(lead[0])) {
+          if (clientsEmail.includes(lead[0].trim())) {
             bgColor = "bg-green-300";
+          }
+          if (lead[1] == "") {
+            return null;
           }
           return (
             <div key={index} className={`${bgColor} rounded-lg shadow-md p-4`}>
               <h2 className="text-lg font-semibold">{lead[2]}</h2>
               <p className="text-gray-500">{lead[0]}</p>
-              <Link href={`https://wa.me/${lead[1].replace("+", "")}`}>
+              <Link href={`https://wa.me/${lead[1].replace("+", "").trim()}`}>
                 {lead[1]}
               </Link>
               <p className="text-gray-500"> CTA:{" " + lead[5]}</p>
+              <p className="text-gray-500">
+                {" "}
+                {new Date(lead[4]).toLocaleDateString("pt-BR")}
+              </p>
             </div>
           );
         })}
