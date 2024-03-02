@@ -2,10 +2,10 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const hotmartSum = await fetch(
-    "https://organic-space-goldfish-vwjrw4wpx62x69-3000.preview.app.github.dev/api/hotmart/resumo"
+    "https://admin.amamentaclube.com.br/api/hotmart/resumo?range=14"
   );
   const metaAdsSum = await fetch(
-    "https://organic-space-goldfish-vwjrw4wpx62x69-3000.preview.app.github.dev/api/meta-ads?range=last_month"
+    "https://admin.amamentaclube.com.br/api/meta-ads?range=last_14d"
   );
   const dataHotmart = await hotmartSum.json();
   const dataMeta = await metaAdsSum.json();

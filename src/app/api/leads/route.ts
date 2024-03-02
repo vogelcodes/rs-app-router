@@ -16,6 +16,6 @@ export async function GET(request: NextRequest) {
   leads = leads.sort((a: string[], b: string[]) => {
     return new Date(b[4]).getTime() - new Date(a[4]).getTime();
   });
-  leads = [new Date().toISOString()].concat(leads.slice(1));
+  // leads = [new Date().toISOString()].concat(leads.slice(1));
   return Response.json(leads);
 }
