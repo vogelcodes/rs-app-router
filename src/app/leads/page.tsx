@@ -12,8 +12,9 @@ const LeadsPage: React.FC = async () => {
     "https://admin.amamentaclube.com.br/api/hotmart/sales"
   ).then((res) => res.json());
   const clientsEmail = clients.map((client) => client.buyer.email);
-  console.log(clientsEmail);
+  // console.log(clientsEmail);
   //every lead in leads is an array with 9 elements, I want to add an extra element true or false if the lead is a client if the lead[0] is in clientsEmail
+  // function to reduce in 3 hours a date
 
   return (
     <div className="flex flex-col items-center">
@@ -36,9 +37,12 @@ const LeadsPage: React.FC = async () => {
                 {lead[1]}
               </Link>
               <p className="text-gray-500"> CTA:{" " + lead[5]}</p>
+
               <p className="text-gray-500">
                 {" "}
-                {new Date(lead[4]).toLocaleDateString("pt-BR")}
+                {new Date(lead[4]).toLocaleString("pt-BR", {
+                  timeZone: "America/Sao_Paulo",
+                })}
               </p>
             </div>
           );
