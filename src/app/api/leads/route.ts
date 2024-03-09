@@ -6,9 +6,9 @@ export async function GET(request: NextRequest) {
   const gsResponse = await fetch(
     "https://script.google.com/macros/s/AKfycbwIAj1HWYmqEeF7I_A3WfJGoshnPzSbQLDYir00RhgoWs1QsRj5nLAsEUIAGYuD7DfopQ/exec",
     {
-      next: {
-        revalidate: 6000,
-      },
+      // next: {
+      //   revalidate: 60,
+      // },
     }
   );
   let leads = await gsResponse.json();

@@ -29,7 +29,7 @@ const LeadsPage: React.FC = async () => {
           try {
             leadLocation = JSON.parse(lead[8]);
           } catch (e) {
-            console.log("lead[8] is not a valid JSON");
+            // console.log("lead[8] is not a valid JSON");
           }
 
           // console.log(leadLocation);
