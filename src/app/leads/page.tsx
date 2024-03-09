@@ -13,7 +13,7 @@ const LeadsPage: React.FC = async () => {
     "https://admin.amamentaclube.com.br/api/hotmart/sales"
   ).then((res) => res.json());
   const clientsEmail = clients.map((client) => client.buyer.email);
-  console.log(JSON.parse(leads[1][8]));
+  // console.log(JSON.parse(leads[1][8]));
   // console.log(clientsEmail);
   //every lead in leads is an array with 9 elements, I want to add an extra element true or false if the lead is a client if the lead[0] is in clientsEmail
   // function to reduce in 3 hours a date
@@ -39,6 +39,7 @@ const LeadsPage: React.FC = async () => {
           if (lead[1] == "") {
             return null;
           }
+          const urlPath = lead[6].split("?")[0];
           const urlParams = new URLSearchParams(lead[6].split("?")[1]);
 
           const utmSource = urlParams.get("utm_source");
@@ -65,7 +66,15 @@ const LeadsPage: React.FC = async () => {
                   ", " +
                   leadLocation.country_code}
               </p>
-              <p>{utmSource + ", " + utmAdset + ", " + utmContent}</p>
+              <p>
+                {urlPath +
+                  ": " +
+                  utmSource +
+                  ", " +
+                  utmAdset +
+                  ", " +
+                  utmContent}
+              </p>
             </div>
           );
         })}
