@@ -36,26 +36,21 @@ const LeadsPage: React.FC = async () => {
           if (clientsEmail.includes(lead[0].trim())) {
             bgColor = "bg-green-300";
           }
-          if (lead[1] == "") {
+          if (lead[1] == "" && lead[0] == "") {
             return null;
           }
           const urlPath = lead[6].split("?")[0];
           const urlParams = new URLSearchParams(lead[6].split("?")[1]);
 
-          const utmSource = urlParams.get("utm_source");
+          const utmSource =
+            urlParams.get("utm_source") ?? urlParams.get("source");
 
           const utmContent = urlParams.get("utm_content");
           const utmAdset = urlParams.get("utm_adset");
+          const utmMedium = urlParams.get("utm_medium");
 
           return (
             <div key={index} className={`${bgColor} rounded-lg shadow-md p-4`}>
-              <h2 className="text-lg font-semibold">{lead[2]}</h2>
-              <p className="text-gray-500">{lead[0]}</p>
-              <Link href={`https://wa.me/${lead[1].replace("+", "").trim()}`}>
-                {lead[1]}
-              </Link>
-              <p className="text-gray-500"> CTA:{" " + lead[5]}</p>
-
               <p className="text-gray-500">
                 {new Date(lead[4]).toLocaleString("pt-BR", {
                   timeZone: "America/Sao_Paulo",
@@ -66,14 +61,26 @@ const LeadsPage: React.FC = async () => {
                   ", " +
                   leadLocation.country_code}
               </p>
+              <h2 className="text-lg font-semibold">{lead[2]}</h2>
+              <p className="text-gray-500">{lead[0]}</p>
+              <Link href={`https://wa.me/${lead[1].replace("+", "").trim()}`}>
+                {lead[1]}
+              </Link>
+              <p className="text-gray-500"> CTA:{" " + lead[5]}</p>
+
               <p>
-                {urlPath +
-                  ": " +
-                  utmSource +
-                  ", " +
-                  utmAdset +
-                  ", " +
-                  utmContent}
+                <span className="px-2 py-1 font-bold bg-slate-100">URL:</span>
+                {urlPath}{" "}
+                <span className="px-2 py-1 font-bold bg-slate-100">Fonte:</span>{" "}
+                {utmSource ?? "N/A"}{" "}
+                <span className="px-2 py-1 font-bold bg-slate-100">Mídia:</span>{" "}
+                {utmMedium ?? "N/A"}{" "}
+                <span className="px-2 py-1 font-bold bg-slate-100">
+                  CjAnúncios:
+                </span>{" "}
+                {utmAdset ?? "N/A"}{" "}
+                <span className="px-2 py-1 font-bold bg-slate-100">Ad:</span>
+                {utmContent ?? "N/A"}
               </p>
             </div>
           );
