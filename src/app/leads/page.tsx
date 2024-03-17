@@ -6,11 +6,11 @@ export const dynamic = "force-dynamic";
 
 const LeadsPage: React.FC = async () => {
   const leads: string[][] = await fetch(
-    "https://admin.amamentaclube.com.br/api/leads"
+    "https://procaci-amamenta-data-production.up.railway.app/api/leads"
   ).then((res) => res.json());
 
   const clients: HotmartSales[] = await fetch(
-    "https://admin.amamentaclube.com.br/api/hotmart/sales"
+    "https://procaci-amamenta-data-production.up.railway.app/api/hotmart/sales"
   ).then((res) => res.json());
   const clientsEmail = clients.map((client) => client.buyer.email);
   // console.log(JSON.parse(leads[1][8]));
